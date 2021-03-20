@@ -34,16 +34,20 @@ const MapContainer = () => {
         lng: -0.1,
       }}
     >
-      <Marker onClick={onMarkerClick} name={"Current location"} />
-      <Marker
-        onClick={onMarkerClick}
-        name={"Current location"}
-        position={{ lat: 51.105, lng: -0.1 }}
+      <Marker onClick={onMarkerClick}
+      name={"Current location"}
+      position={{ lat: 51.505, lng: -0.1 }}
       />
       <Marker
         onClick={onMarkerClick}
+        name={"Current location"}
+        position={{ lat: 51.50, lng: -0.1 }}
+      />
+      <Marker
+        onClick={onMarkerClick}
+        title={'Hello'}
         name={"Curr location"}
-        position={{ lat: 51.05, lng: -0.1 }}
+        position={{ lat: 51.495, lng: -0.1 }}
       />
       <InfoWindow marker={activeMarker} visible={infoWindow}>
         <div>
