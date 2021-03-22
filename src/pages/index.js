@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
+import * as trial from '../trial.js'
 
 const mapStyles = {
   width: "100%",
@@ -10,6 +11,8 @@ const MapContainer = () => {
   const [infoWindow, setInfoWindow] = useState(false);
   const [activeMarker, setActiveMarker] = useState({});
   const [selectedPlace, setSelectedPlace] = useState({});
+
+console.log(trial, 'hello')
 
   const onMarkerClick = (props, marker) => {
     setSelectedPlace(props.name);
