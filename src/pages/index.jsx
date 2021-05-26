@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Map, GoogleApiWrapper, InfoWindow, Marker,
 } from 'google-maps-react';
-import getRestaurants from '../getRestaurants.tsx';
+import getRestaurants from '../getRestaurants';
 
 const mapStyles = {
   width: '100%',
