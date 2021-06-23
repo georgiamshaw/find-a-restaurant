@@ -8,7 +8,8 @@ const getRestaurants = async () => {
   });
 
   const response = await client.getEntries();
-  return response;
+  console.log(response.items, 'this is response');
+  return response.items.map((item) => item.fields);
 };
 
 export default getRestaurants;

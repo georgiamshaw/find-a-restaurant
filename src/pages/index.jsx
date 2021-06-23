@@ -10,19 +10,52 @@ const mapStyles = {
   height: '100%',
 };
 
-const MapContainer = () => {
-  const [infoWindow, setInfoWindow] = useState(false);
-  const [activeMarker, setActiveMarker] = useState({});
-  const [selectedPlace, setSelectedPlace] = useState('');
-  const [selectedReview, setSelectedReview] = useState('');
-  const [restaurants, setRestaurants] = useState({});
-
+const Markers = (
+  selectedPlace,
+  setSelectedPlace,
+  selectedReview,
+  setSelectedReview,
+  activeMarker,
+  setActiveMarker,
+  infoWindow,
+  setInfoWindow,
+  restaurants,
+  setRestaurants,
+) => {
   const onMarkerClick = (restaurant, marker) => {
     setSelectedPlace(restaurant.name);
     setSelectedReview(restaurant.review);
     setActiveMarker(marker);
     setInfoWindow(true);
   };
+
+  const restaurantArray = restaurants?.items.map((item) => ({
+    name: item.fields.name,
+    review: item.fields.review,
+    location: item.fields.location,
+  }));
+
+  const x = restaurantArray && restaurantArray.map((restaurant) => (
+    <Marker
+      onClick={onMarkerClick}
+      name={restaurant.name}
+      review={restaurant.review}
+      position={{
+        lat: restaurant.location.lat,
+        lng: restaurant.location.lon,
+      }}
+    />
+  ));
+  console.log(restaurants, 'this is x');
+  return x || [];
+};
+
+const MapContainer = () => {
+  const [infoWindow, setInfoWindow] = useState(false);
+  const [activeMarker, setActiveMarker] = useState({});
+  const [selectedPlace, setSelectedPlace] = useState('');
+  const [selectedReview, setSelectedReview] = useState('');
+  const [restaurants, setRestaurants] = useState([]);
 
   const onClose = () => {
     if (infoWindow) {
@@ -32,14 +65,8 @@ const MapContainer = () => {
   };
 
   useEffect(() => {
-    getRestaurants().then(setRestaurants);
+    getRestaurants().then((restaurants1) => { console.log(restaurants1, 'rest'); setRestaurants(restaurants1); });
   }, []);
-
-  const restaurantArray = restaurants.items?.map((item) => ({
-    name: item.fields.name,
-    review: item.fields.review,
-    location: item.fields.location,
-  }));
 
   return (
     <Map
@@ -53,21 +80,18 @@ const MapContainer = () => {
         lng: -0.1,
       }}
     >
-      {
-      restaurantArray
-        && restaurantArray.map((restaurant) => (
-          <Marker
-            onClick={onMarkerClick}
-            name={restaurant.name}
-            review={restaurant.review}
-            position={{
-              lat: restaurant.location.lat,
-              lng: restaurant.location.lon,
-            }}
-          />
-
-        ))
-}
+      <Markers
+        restaurants={restaurants}
+        setRestaurants={setRestaurants}
+        infoWindow={infoWindow}
+        setInfoWindow={setInfoWindow}
+        activeMarker={activeMarker}
+        setActiveMarker={setActiveMarker}
+        selectedReview={selectedReview}
+        setSelectedReview={setSelectedReview}
+        selectedPlace={selectedPlace}
+        setSelectedPlace={setSelectedPlace}
+      />
       <InfoWindow marker={activeMarker} visible={infoWindow}>
         <h1>{selectedPlace}</h1>
         <div>{selectedReview}</div>
